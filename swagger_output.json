@@ -78,7 +78,7 @@
     },
     "/api/notes": {
       "post": {
-        "description": "",
+        "description": "Creates a new note, title may only be below 50 characters and text below 300 characters.",
         "parameters": [
           {
             "name": "authorization",
@@ -111,7 +111,7 @@
         }
       },
       "get": {
-        "description": "",
+        "description": "Gets all the available notes.",
         "parameters": [
           {
             "name": "authorization",
@@ -129,7 +129,7 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Changes the text of a note, search on title.",
         "parameters": [
           {
             "name": "authorization",
@@ -162,7 +162,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "removes a note, search on title",
         "parameters": [
           {
             "name": "authorization",
@@ -192,9 +192,9 @@
         }
       }
     },
-    "/api/notes/search": {
+    "/api/notes/search/{title}": {
       "get": {
-        "description": "",
+        "description": "Enter the title you want to search for.",
         "parameters": [
           {
             "name": "authorization",
@@ -202,16 +202,10 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

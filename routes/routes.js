@@ -24,6 +24,6 @@ router.put("/notes", auth, lengthControl, noteCheck, editNotes)
 
 router.delete("/notes", auth, noteCheck, deleteNotes)
 
-router.get("/notes/search", auth, searchNote)
+router.get("/notes/search/:title", auth, searchNote)
 
   

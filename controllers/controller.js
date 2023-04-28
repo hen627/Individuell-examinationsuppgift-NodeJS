@@ -51,7 +51,8 @@ export function deleteNotes(req, res) {
 }
 
 export function searchNote(req, res) {
-    findSpecificNote(req.body)
+    const search = req.params;
+    findSpecificNote(search)
     .then(data => {
         res.status(200).json(data)
     })

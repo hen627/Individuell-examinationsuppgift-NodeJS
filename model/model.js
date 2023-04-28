@@ -26,12 +26,14 @@ export async function signIntoAccount(req) {
 
     const name = await accountDB.findOne({ username: req.username });
     const result = {
-        success: false
+        success: false,
+        msg: "username or password incorrect"
     }
     if (name) {
         const tryPassword = await comparePassword(req.password, name.password);
         if (tryPassword) {
             result.success = true;
+            result.msg = "Succesfully signed in"
             result.token = sign({id : name.uuid}, 'h3ll0', {
                 expiresIn: 600 // 10 min
             });
@@ -68,11 +70,13 @@ export async function removeNotes(req){
 export async function findSpecificNote(req){
     const specifiedNote = await notesDB.findOne({title: req.title})
     const result = {
-        success: false
+        success: false,
+        msg: "Note not found"
     }
 
     if (specifiedNote){
         result.success = true;
+        result.msg = "Note found";
         result.title = specifiedNote.title;
         result.text = specifiedNote.text;
     }

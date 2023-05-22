@@ -1,5 +1,5 @@
 import { verify } from "../model/model.js";
-import { findSpecificNote, userSearch } from "../model/model.js";
+import { findSpecificNoteInBody, userSearch } from "../model/model.js";
 
 export async function auth(req, response, next) {
     const authHeadcheck = req.headers.authorization;
@@ -9,11 +9,11 @@ export async function auth(req, response, next) {
     }
 
     const token = req.headers.authorization.replace('Bearer ', '');
-
     try {
         const data = verify(token, 'h3ll0');
         req.token = token;
         req.id = data.id;
+        //req.id is userid
         next();
     } catch (error) {
         response.status(400).json({ success: false, error: 'Invalid token' });
@@ -37,7 +37,7 @@ export async function lengthControl(req, response, next){
 }
 
 export async function antiDuplicates(req, response, next){
-    const noteControl = await findSpecificNote(req.body)
+    const noteControl = await findSpecificNoteInBody(req)
 
     if (noteControl.success === true){
         return response.status(400).json("Title already exists, no duplicates allowed")
@@ -46,7 +46,7 @@ export async function antiDuplicates(req, response, next){
 }
 
 export async function noteCheck(req, response, next){
-    const noteControl = await findSpecificNote(req.body)
+    const noteControl = await findSpecificNoteInBody(req)
 
     if (noteControl.success === false){
         return response.status(400).json("Note not found")

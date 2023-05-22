@@ -19,7 +19,7 @@ export function checkAccount(req, res) {
 }
 
 export function newNotes(req, res) {
-    createNotes(req.body)
+    createNotes(req)
     .then(data => {
         res.status(200).json(data)
     })
@@ -27,7 +27,7 @@ export function newNotes(req, res) {
 }
 
 export function getNotes(req, res) {
-    findNotes(req.body)
+    findNotes(req)
     .then(data => {
         res.status(200).json(data)
     })
@@ -35,7 +35,7 @@ export function getNotes(req, res) {
 }
 
 export function editNotes(req, res) {
-    changeNotes(req.body)
+    changeNotes(req)
     .then(data => {
         res.status(200).json("The note has been updated")
     })
@@ -43,7 +43,7 @@ export function editNotes(req, res) {
 }
 
 export function deleteNotes(req, res) {
-    removeNotes(req.body)
+    removeNotes(req)
     .then(data => {
         res.status(200).json("The note has been deleted")
     })
@@ -51,8 +51,7 @@ export function deleteNotes(req, res) {
 }
 
 export function searchNote(req, res) {
-    const search = req.params;
-    findSpecificNote(search)
+    findSpecificNote(req)
     .then(data => {
         res.status(200).json(data)
     })

@@ -46,29 +46,47 @@ export async function createNotes(req){
     const dateTime = dateAndTime();
     const newNotes = await notesDB.insert({
         id: uuidv4(),
-        title: req.title,
-        text: req.text,
+        title: req.body.title,
+        text: req.body.text,
+        ownerId: req.id,
         createdAt: dateTime,
         modifiedAt: dateTime
     })
     return newNotes
 }
 
-export async function findNotes(){
-    return await notesDB.find({})
+export async function findNotes(req){
+    return await notesDB.find({ownerId: req.id})
 }
 
 export async function changeNotes(req){
     const dateTime = dateAndTime();
-    return await notesDB.update({title: req.title}, {$set: {text: req.text, modifiedAt: dateTime}})
+    return await notesDB.update({title: req.body.title, ownerId: req.id}, {$set: {text: req.body.text, modifiedAt: dateTime}})
 }
 
 export async function removeNotes(req){
-    return await notesDB.remove({title: req.title})
+    return await notesDB.remove({title: req.body.title, ownerId: req.id})
 }
 
 export async function findSpecificNote(req){
-    const specifiedNote = await notesDB.findOne({title: req.title})
+    const search = req.params;
+    const specifiedNote = await notesDB.findOne({title: search.title, ownerId: req.id})
+    const result = {
+        success: false,
+        msg: "Note not found"
+    }
+
+    if (specifiedNote){
+        result.success = true;
+        result.msg = "Note found";
+        result.title = specifiedNote.title;
+        result.text = specifiedNote.text;
+    }
+    return result;
+}
+
+export async function findSpecificNoteInBody(req){
+    const specifiedNote = await notesDB.findOne({title: req.body.title, ownerId: req.id})
     const result = {
         success: false,
         msg: "Note not found"
